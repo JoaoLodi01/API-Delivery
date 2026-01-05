@@ -4,14 +4,15 @@ namespace App\Services;
 
 use App\DTOs\AddressDto;
 use App\DTOs\AddressStoreDto;
-use App\Http\Requests\UpdateAddressRequest;
 use App\Repositories\Eloquent\AddressRepository;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class AddressService 
 {
     public function __construct(
-        private AddressRepository $addressRepository
+        private AddressRepository $addressRepository,
+        private CepService $cepService
     )
     {}
 
@@ -33,7 +34,20 @@ class AddressService
 
     public function store(AddressStoreDto $dto)
     {
-        return $this->addressRepository->store($dto);
+        $resultApi = $this->cepService->getCepApi($dto->cep);
+
+        $storeData = new AddressStoreDto (
+            cep: $resultApi->cep,
+            street: $resultApi->street,
+            neighborhood: $resultApi->neighborhood,
+            city: $resultApi->city,
+            state: $resultApi->state,
+            number: $dto->number,
+            complement: $dto->complement,
+            reference: $dto->reference,
+        );
+
+        return DB::transaction(fn () => $this->addressRepository->store($storeData));
     }
 
     public function update(AddressStoreDto $dto, int $id)
@@ -44,7 +58,22 @@ class AddressService
             throw new \Exception('Endereço não encontrado');
         }
 
-        return $this->addressRepository->update($address, $dto);
+        if ($dto->cep && $dto->cep !== $address->cep){
+            $cepApi = $this->cepService->getCepApi($dto->cep);
+        }
+        
+        $addressDto = new AddressStoreDto(
+            cep: $cepApi->cep ?? $address->cep,
+            street: $cepApi->street ?? $address->street,
+            neighborhood: $cepApi->neighborhood ?? $address->neighborhood,
+            city: $cepApi->city ?? $address->city,
+            state: $cepApi->state ?? $address->state,
+            number: $dto->number ?? $address->number,
+            complement: $dto->complement ?? $address->complement,
+            reference: $dto->reference ?? $address->reference,
+        );
+
+        return DB::transaction(fn () => $this->addressRepository->update($address, $dto));
     }
 
     public function destroy(int $id)
