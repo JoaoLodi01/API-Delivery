@@ -5,17 +5,20 @@ namespace App\Repositories\Eloquent;
 use App\DTOs\AddressStoreDto;
 use App\Models\Address;
 use Illuminate\Database\Eloquent\Collection;
+use App\Repositories\Contracts\AddressRepositoryContract;
 
-class AddressRepository 
+class AddressRepository extends AddressRepositoryContract
 {
     public function index(): Collection
     {
-        return Address::all();
+        return Address::where('active', true)->get;
     }
 
     public function show(int $id): ?Address
     {
-        return Address::find($id);
+        return Address::where('id', $id)
+                    ->where('active', true)
+                    ->first();
     }
 
     public function store(AddressStoreDto $dto): Address

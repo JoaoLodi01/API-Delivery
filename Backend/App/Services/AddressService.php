@@ -2,16 +2,15 @@
 
 namespace App\Services;
 
-use App\DTOs\AddressDto;
 use App\DTOs\AddressStoreDto;
-use App\Repositories\Eloquent\AddressRepository;
+use App\Exceptions\Address\AddressNotFoundException;
+use App\Repositories\Contracts\AddressRepositoryContract;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 
 class AddressService 
 {
     public function __construct(
-        private AddressRepository $addressRepository,
+        private AddressRepositoryContract $addressRepository,
         private CepService $cepService
     )
     {}
@@ -55,7 +54,7 @@ class AddressService
         $address = $this->addressRepository->show($id);
 
         if (!$address) {
-            throw new \Exception('Endereço não encontrado');
+            throw new AddressNotFoundException();
         }
 
         if ($dto->cep && $dto->cep !== $address->cep){
@@ -73,7 +72,7 @@ class AddressService
             reference: $dto->reference ?? $address->reference,
         );
 
-        return DB::transaction(fn () => $this->addressRepository->update($address, $dto));
+        return DB::transaction(fn () => $this->addressRepository->update($address, $addressDto));
     }
 
     public function destroy(int $id)

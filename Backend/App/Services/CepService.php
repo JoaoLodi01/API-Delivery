@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTOs\AddressDto;
+use App\Exceptions\Cep\CepApiException;
 use App\Repositories\Eloquent\AddressRepository;
 use Illuminate\Support\Facades\Http;
 
@@ -21,7 +22,7 @@ class CepService
             ->get("https://brasilapi.com.br/api/cep/v2/{$cep}");
 
         if ($res->failed()) {
-            throw new \Exception('Erro ao consultar CEP: ' . $res);
+            throw new CepApiException();
         }
 
         return AddressDto::resApi($res->json());
