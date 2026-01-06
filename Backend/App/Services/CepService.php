@@ -2,14 +2,14 @@
 
 namespace App\Services;
 
-use App\DTOs\AddressDto;
+use App\DTOs\CepDto;
 use App\Exceptions\Cep\CepApiException;
 use App\Repositories\Eloquent\AddressRepository;
 use Illuminate\Support\Facades\Http;
 
 class CepService 
 {
-    public function getCepApi(string $cep): AddressDto
+    public function getCepApi(string $cep): CepDto
     {
         $cep = preg_replace('/\D/', '', $cep);
 
@@ -25,6 +25,14 @@ class CepService
             throw new CepApiException();
         }
 
-        return $res->json();
+        $data = $res->json();
+
+        return new CepDto(
+            cep: $data['cep'],
+            state: $data['state'],
+            city: $data['city'],
+            street: $data['street'],
+            neighborhood: $data['neighborhood'] ?? null
+        );
     }
 }

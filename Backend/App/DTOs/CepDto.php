@@ -2,7 +2,7 @@
 
 namespace App\DTOs;
 
-class AddressDto 
+class CepDto 
 {
     public function __construct(
         public string $cep,
