@@ -32,7 +32,11 @@ class CepService
             state: $data['state'],
             city: $data['city'],
             street: $data['street'],
-            neighborhood: $data['neighborhood'] ?? null
+            neighborhood: $data['neighborhood'] ?? null,
+            location: [
+                'latitude' => $data['location']['coordinates']['latitude'] ?? null,
+                'longitude' =>  $data['location']['coordinates']['longitude'] ?? null,
+            ],
         );
     }
 }

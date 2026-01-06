@@ -10,6 +10,7 @@ class CepDto
         public string $city,
         public ?string $neighborhood,
         public ?string $street,
+        public ?array $location,
     )
     {}
 
@@ -21,6 +22,7 @@ class CepDto
             city: $data['city'],
             neighborhood: $data['neighborhood'] ?? null,
             street: $data['street'] ?? null,
+            location: $data['location'],
         );
     }
 }
