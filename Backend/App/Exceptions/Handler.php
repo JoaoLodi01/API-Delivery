@@ -4,7 +4,6 @@ namespace App\Exceptions;
 
 use App\Exceptions\Address\AddressNotFoundException;
 use App\Http\Responses\ApiResponse;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -32,7 +31,7 @@ class Handler extends ExceptionHandler
             );
         });
 
-        $this->renderable(function (Throwable $e) {
+        $this->renderable(function (BaseDomainException $e) {
             Log::channel('errors')->error('Erro detectado:', [
                 'line' => $e->getLine(),
                 'file' => $e->getFile(),
@@ -44,7 +43,7 @@ class Handler extends ExceptionHandler
                 'Erro interno do servidor',
                 [],
                 false,
-                500
+                $e->getStatusCode(),
             );
         });
     }

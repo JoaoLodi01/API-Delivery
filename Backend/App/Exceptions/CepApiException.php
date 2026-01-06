@@ -2,9 +2,11 @@
 
 namespace App\Exceptions\Cep;
 
+use App\Exceptions\BaseDomainException;
 use Exception;
 
-class CepApiException extends Exception
+class CepApiException extends BaseDomainException
 {
-    protected $message = 'Erro ao consultar o CEP';
+    protected int $statusCode = 404;
+    protected $message = 'Endereço não localizado';
 }

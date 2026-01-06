@@ -3,22 +3,30 @@
 namespace App\Repositories\Eloquent;
 
 use App\DTOs\AddressStoreDto;
+use App\Exceptions\Address\AddressNotFoundException;
 use App\Models\Address;
 use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Contracts\AddressRepositoryContract;
+use Illuminate\Pagination\LengthAwarePaginator;
 
-class AddressRepository extends AddressRepositoryContract
+class AddressRepository implements AddressRepositoryContract
 {
-    public function index(): Collection
+    public function index(): LengthAwarePaginator
     {
-        return Address::where('active', true)->get;
+        return Address::where('active', true)->paginate(15);
     }
 
-    public function show(int $id): ?Address
+    public function show(int $id): Address
     {
-        return Address::where('id', $id)
+        $address = Address::where('id', $id)
                     ->where('active', true)
                     ->first();
+
+        if (!$address){
+            throw new AddressNotFoundException();
+        }
+
+        return $address;
     }
 
     public function store(AddressStoreDto $dto): Address
@@ -51,11 +59,16 @@ class AddressRepository extends AddressRepositoryContract
         return $address;
     }
 
-    public function destroy(int $id): bool
+    public function destroy(int $id)
     {
-        return Address::where('id', $id)
-            ->update([
-                'active' => false,
-            ]) > 0;
+        $address = Address::find($id);
+
+        if(!$address){
+            throw new AddressNotFoundException();
+        }
+
+        return $address->update([
+            'active' => false,
+        ]);
     }
 }

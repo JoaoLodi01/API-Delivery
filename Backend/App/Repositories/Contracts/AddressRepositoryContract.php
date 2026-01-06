@@ -5,10 +5,11 @@ namespace App\Repositories\Contracts;
 use App\DTOs\AddressStoreDto;
 use App\Models\Address;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 interface AddressRepositoryContract
 {
-    public function index(): Collection;
+    public function index(): LengthAwarePaginator;
 
     public function show(int $id): ?Address;
 
@@ -16,5 +17,5 @@ interface AddressRepositoryContract
 
     public function update(Address $address, AddressStoreDto $dto): Address;
 
-    public function destroy(int $id): bool;
+    public function destroy(int $id);
 }

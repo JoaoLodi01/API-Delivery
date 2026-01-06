@@ -25,6 +25,6 @@ class CepService
             throw new CepApiException();
         }
 
-        return AddressDto::resApi($res->json());
+        return $res->json();
     }
 }
