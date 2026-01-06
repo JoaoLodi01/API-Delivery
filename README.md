@@ -95,7 +95,9 @@ php artisan migrate
 # Subir servidor
 php artisan serve
 ```
+## 🚀 Testes
 
+Na pasta "BACKEND -> JSON" possui alguns arquivos para testar as rotas.
 ---
 
 ## 🔧 Lembrete
