@@ -27,16 +27,6 @@ class CepService
 
         $data = $res->json();
 
-        return new CepDto(
-            cep: $data['cep'],
-            state: $data['state'],
-            city: $data['city'],
-            street: $data['street'],
-            neighborhood: $data['neighborhood'] ?? null,
-            location: [
-                'latitude' => $data['location']['coordinates']['latitude'] ?? null,
-                'longitude' =>  $data['location']['coordinates']['longitude'] ?? null,
-            ],
-        );
+        return CepDto::fromApi($res->json());
     }
 }

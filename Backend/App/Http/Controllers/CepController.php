@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CepRequest;
 use App\Http\Responses\ApiResponse;
 use App\Services\CepService;
 
@@ -12,10 +13,12 @@ class CepController extends Controller
     )
     {}
 
-    public function search(string $cep)
+    public function search(CepRequest $request)
     {
-        $data = $this->cepService->getCepApi($cep);
+        $cep = $request->validated()['cep'];
 
+        $data = $this->cepService->getCepApi($cep);
+        
         if (!$data) {
             return ApiResponse::error(
                 message: 'CEP não encontrado.',

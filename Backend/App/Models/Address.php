@@ -15,6 +15,9 @@ class Address extends Model
         'number',
         'complement',
         'reference',
+        'service',
+        'longitude',
+        'latitude',
         'active',
     ];
 }

@@ -11,8 +11,11 @@ class AddressStoreDto
         public string $street,
         public string $number,
         public ?string $neighborhood,
+        public ?string $service,
         public ?string $complement,
         public ?string $reference, 
+        public ?string $latitude,
+        public ?string $longitude,
     )
     {}
 
@@ -25,8 +28,11 @@ class AddressStoreDto
             street: $data['street'],
             number: $data['number'],
             neighborhood: $data['neighborhood'] ?? null,
+            service: $data['service'] ?? null,
             complement: $data['complement'] ?? null,
             reference: $data['reference'] ?? null,
+            latitude: $data['location']['latitude'] ?? null,
+            longitude: $data['location']['longitude'] ?? null,
         );
     }
 }

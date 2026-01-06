@@ -40,6 +40,9 @@ class AddressRepository implements AddressRepositoryContract
             'number' => $dto->number,
             'complement' => $dto->complement,
             'reference' => $dto->reference,
+            'service' => $dto->service,
+            'latitude' => $dto->latitude,
+            'longitude' => $dto->longitude,
         ]);
     }
 
@@ -54,6 +57,9 @@ class AddressRepository implements AddressRepositoryContract
             'number' => $dto->number,
             'complement' => $dto->complement,
             'reference' => $dto->reference,
+            'service' => $dto->service,
+            'latitude' => $dto->latitude,
+            'longitude' => $dto->longitude,
         ]);
 
         return $address;

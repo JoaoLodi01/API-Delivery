@@ -2,7 +2,7 @@
 
 namespace App\DTOs;
 
-class CepDto 
+class CepDto
 {
     public function __construct(
         public string $cep,
@@ -10,11 +10,12 @@ class CepDto
         public string $city,
         public ?string $neighborhood,
         public ?string $street,
-        public ?array $location,
-    )
-    {}
+        public ?string $service,
+        public ?float $latitude,
+        public ?float $longitude,
+    ) {}
 
-    public static function resApi(array $data): self
+    public static function fromApi(array $data): self
     {
         return new self(
             cep: $data['cep'],
@@ -22,7 +23,13 @@ class CepDto
             city: $data['city'],
             neighborhood: $data['neighborhood'] ?? null,
             street: $data['street'] ?? null,
-            location: $data['location'],
+            service: $data['service'] ?? null,
+            latitude: isset($data['location']['coordinates']['latitude'])
+                ? (float) $data['location']['coordinates']['latitude']
+                : null,
+            longitude: isset($data['location']['coordinates']['longitude'])
+                ? (float) $data['location']['coordinates']['longitude']
+                : null,
         );
     }
 }

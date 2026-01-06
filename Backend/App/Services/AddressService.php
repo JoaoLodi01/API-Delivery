@@ -25,7 +25,7 @@ class AddressService
         $address = $this->addressRepository->show($id);
 
         if (!$address){
-            throw new \Exception('Endereço não encontrado');
+            throw new AddressNotFoundException();
         }
 
         return $address;
@@ -42,8 +42,11 @@ class AddressService
             city: $resultApi->city,
             state: $resultApi->state,
             number: $dto->number,
+            service: $resultApi->service,
             complement: $dto->complement,
             reference: $dto->reference,
+            latitude: $resultApi->latitude,
+            longitude: $resultApi->longitude,
         );
 
         return DB::transaction(fn () => $this->addressRepository->store($storeData));
@@ -68,8 +71,11 @@ class AddressService
             city: $cepApi->city ?? $address->city,
             state: $cepApi->state ?? $address->state,
             number: $dto->number ?? $address->number,
+            service: $cepApi->service ?? $address->service,
             complement: $dto->complement ?? $address->complement,
             reference: $dto->reference ?? $address->reference,
+            latitude: $cepApi->latitude ?? $address->latitude,
+            longitude: $cepApi->longitude ?? $address->longitude,
         );
 
         return DB::transaction(fn () => $this->addressRepository->update($address, $addressDto));
@@ -80,7 +86,7 @@ class AddressService
         $address = $this->addressRepository->show($id);
 
         if (!$address){
-            throw new \Exception('Endereço não encontrado');
+            throw new AddressNotFoundException();
         }
 
         return $this->addressRepository->destroy($id);

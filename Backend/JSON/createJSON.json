@@ -1,0 +1,14 @@
+{
+  "cep": "89705228",
+  "street": "Rua Ricardo João Angonese",
+  "number": "243",
+  "neighborhood": "Gruta",
+  "city": "Concórdia",
+  "state": "SC",
+  "complement": "Casa baixa",
+  "reference": "Próximo ao mercado",
+  "location": {
+    "latitude": "-27.2334316",
+    "longitude": "-52.0492209"
+  }
+}

@@ -14,13 +14,16 @@ return new class extends Migration
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->string('cep', 8);
-            $table->string('state');
-            $table->string('city');
-            $table->string('neighborhood');
-            $table->string('street');
-            $table->string('number');
-            $table->string('complement');
-            $table->string('reference');
+            $table->string('state', 2);
+            $table->string('city', 100);
+            $table->string('neighborhood', 100);
+            $table->string('street', 100);
+            $table->string('number', 8);
+            $table->string('complement', 200);
+            $table->string('reference', 200);
+            $table->string('service');
+            $table->string('latitude', 200);
+            $table->string('longitude', 200);
             $table->boolean('active')->default(1);
             $table->timestamps();
         });
